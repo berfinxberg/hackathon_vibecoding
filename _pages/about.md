@@ -2,6 +2,18 @@
 permalink: /
 title: "Berfin Berg · Product & UX Designer"
 excerpt: "Designing calm, human-centered experiences for students and teams under pressure."
+tagline: "Product & UX Designer · Calm Systems for Busy Humans"
+welcome_message: "Welcome to my little corner of the internet. I design reassuring digital rituals for students, educators, and teams working under pressure—turning chaos into calm through thoughtful research and prototyping."
+quick_links:
+  - label: "Latest Portfolio"
+    description: "Case studies & experiments"
+    url: "/portfolio/"
+  - label: "Download CV"
+    description: "1-page snapshot"
+    url: "/files/cv.pdf"
+  - label: "Say Hello"
+    description: "berfin.berg@email.com"
+    url: "mailto:berfin.berg@email.com"
 author_profile: true
 redirect_from: 
   - /about/
@@ -10,6 +22,8 @@ header:
   overlay_color: "#f8f7f3"
   cta_label: "View Projects"
   cta_url: "/portfolio/"
+  profile_image: "/images/berfin-berg.jpg"
+  profile_alt: "Portrait of Berfin Berg smiling"
 ---
 
 This is the front page of a website that is powered by the [Academic Pages template](https://github.com/academicpages/academicpages.github.io) and hosted on GitHub pages. [GitHub pages](https://pages.github.com) is a free service in which websites are built and hosted from code and data stored in a GitHub repository, automatically updating when a new commit is made to the repository. This template was forked from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/) created by Michael Rose, and then extended to support the kinds of content that academics have: publications, talks, teaching, a portfolio, blog posts, and a dynamically-generated CV. Incidentally, these same features make it a great template for anyone that needs to show off a professional template!
