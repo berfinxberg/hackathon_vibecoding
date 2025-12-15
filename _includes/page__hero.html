@@ -1,0 +1,96 @@
+{% include base_path %}
+
+{% if page.header.image contains "://" %}
+  {% capture img_path %}{{ page.header.image }}{% endcapture %}
+{% else %}
+  {% capture img_path %}{{ page.header.image | prepend: "/images/" | prepend: base_path }}{% endcapture %}
+{% endif %}
+
+{% if page.header.cta_url contains "://" %}
+  {% capture cta_path %}{{ page.header.cta_url }}{% endcapture %}
+{% else %}
+  {% capture cta_path %}{{ page.header.cta_url | prepend: base_path }}{% endcapture %}
+{% endif %}
+
+{% if page.header.overlay_image contains "://" %}
+  {% capture overlay_img_path %}{{ page.header.overlay_image }}{% endcapture %}
+{% elsif page.header.overlay_image %}
+  {% capture overlay_img_path %}{{ page.header.overlay_image | prepend: "/images/" | prepend: base_path }}{% endcapture %}
+{% endif %}
+
+{% if page.header.overlay_filter contains "rgba" %}
+  {% capture overlay_filter %}{{ page.header.overlay_filter }}{% endcapture %}
+{% elsif page.header.overlay_filter %}
+  {% capture overlay_filter %}rgba(0, 0, 0, {{ page.header.overlay_filter }}){% endcapture %}
+{% endif %}
+
+<div class="page__hero{% if page.header.overlay_color or page.header.overlay_image %}--overlay{% endif %}"
+  style="{% if page.header.overlay_color %}background-color: {{ page.header.overlay_color | default: 'transparent' }};{% endif %} {% if overlay_img_path %}background-image: {% if overlay_filter %}linear-gradient({{ overlay_filter }}, {{ overlay_filter }}), {% endif %}url('{{ overlay_img_path }}');{% endif %}"
+>
+  {% if page.header.overlay_color or page.header.overlay_image %}
+    <div class="wrapper">
+      <div class="hero__layout{% if page.header.profile_image %} hero__layout--two-col{% endif %}">
+        <div class="hero__intro">
+          {% if page.tagline %}
+            <p class="hero__tagline">{{ page.tagline }}</p>
+          {% endif %}
+          <h1 class="page__title" itemprop="headline">
+            {% if paginator %}
+              {{ site.title }}{% unless paginator.page == 1 %} {{ site.data.ui-text[site.locale].page | default: "Page" }} {{ paginator.page }}{% endunless %}
+            {% else %}
+              {{ page.title | default: site.title | markdownify | remove: "<p>" | remove: "</p>" }}
+            {% endif %}
+          </h1>
+          {% assign hero_lead = page.welcome_message | default: page.excerpt %}
+          {% if hero_lead %}
+            <p class="page__lead hero__welcome">{{ hero_lead | markdownify | remove: "<p>" | remove: "</p>" }}</p>
+          {% endif %}
+          {% if site.read_time and page.read_time %}
+            <p class="page__meta"><i class="fa fa-clock" aria-hidden="true"></i> {% include read-time.html %}</p>
+          {% endif %}
+          {% if page.header.cta_url %}
+            <div class="hero__actions">
+              <a href="{{ cta_path }}" class="btn btn--light-outline btn--large">{{ page.header.cta_label | default: site.data.ui-text[site.locale].more_label | default: "Learn More" }}</a>
+            </div>
+          {% endif %}
+          {% if page.quick_links %}
+            <div class="hero__quick-links" role="list">
+              {% for item in page.quick_links %}
+                {% assign quick_url = item.url | default: "#" %}
+                {% if quick_url contains '://' %}
+                  {% assign quick_href = quick_url %}
+                {% else %}
+                  {% assign quick_href = quick_url | prepend: base_path %}
+                {% endif %}
+                <a role="listitem" class="hero__quick-link" href="{{ quick_href }}">
+                  <span class="hero__quick-link-label">{{ item.label }}</span>
+                  {% if item.description %}
+                    <span class="hero__quick-link-desc">{{ item.description }}</span>
+                  {% endif %}
+                </a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        {% if page.header.profile_image %}
+          {% assign raw_profile_image = page.header.profile_image %}
+          {% if raw_profile_image contains '://' %}
+            {% assign profile_image_src = raw_profile_image %}
+          {% else %}
+            {% assign profile_image_src = raw_profile_image | prepend: base_path %}
+          {% endif %}
+          <div class="hero__profile" aria-hidden="true">
+            <div class="hero__profile-frame">
+              <img src="{{ profile_image_src }}" alt="{{ page.header.profile_alt | default: page.title }}" loading="lazy">
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <img src="{{ img_path }}" alt="{{ page.title }}" class="page__hero-image">
+  {% endif %}
+  {% if page.header.caption %}
+    <span class="page__hero-caption">{{ page.header.caption | markdownify | remove: "<p>" | remove: "</p>" }}</span>
+  {% endif %}
+</div>
