@@ -6,13 +6,16 @@
 // "system". Default is "system".
 let determineThemeSetting = () => {
   let themeSetting = localStorage.getItem("theme");
-  return (themeSetting != "dark" && themeSetting != "light" && themeSetting != "system") ? "system" : themeSetting;
+  return (themeSetting != "dark" && themeSetting != "light" && themeSetting != "party" && themeSetting != "system") ? "system" : themeSetting;
 };
 
 // Determine the computed theme, which can be "dark" or "light". If the theme setting is
 // "system", the computed theme is determined based on the user's system preference.
 let determineComputedTheme = () => {
   let themeSetting = determineThemeSetting();
+  if (themeSetting === "party") {
+    return "party";
+  }
   if (themeSetting != "system") {
     return themeSetting;
   }
@@ -30,21 +33,31 @@ let setTheme = (theme) => {
     $("html").attr("data-theme") ||
     browserPref;
 
+  const $icon = $("#theme-icon");
+  $icon.removeClass("fa-sun fa-moon fa-champagne-glasses");
+
   if (use_theme === "dark") {
     $("html").attr("data-theme", "dark");
-    $("#theme-icon").removeClass("fa-sun").addClass("fa-moon");
-  } else if (use_theme === "light") {
+    $icon.addClass("fa-moon");
+  } else if (use_theme === "party") {
+    $("html").attr("data-theme", "party");
+    $icon.addClass("fa-champagne-glasses");
+  } else {
     $("html").removeAttr("data-theme");
-    $("#theme-icon").removeClass("fa-moon").addClass("fa-sun");
+    $icon.addClass("fa-sun");
   }
 };
 
 // Toggle the theme manually
 var toggleTheme = () => {
-  const current_theme = $("html").attr("data-theme");
-  const new_theme = current_theme === "dark" ? "light" : "dark";
-  localStorage.setItem("theme", new_theme);
-  setTheme(new_theme);
+  const themeCycle = ["light", "dark", "party"];
+  const storedTheme = localStorage.getItem("theme");
+  const currentTheme = (storedTheme && storedTheme !== "system") ? storedTheme : determineComputedTheme();
+  const currentIndex = themeCycle.indexOf(currentTheme);
+  const nextTheme = themeCycle[(currentIndex + 1) % themeCycle.length];
+
+  localStorage.setItem("theme", nextTheme);
+  setTheme(nextTheme);
 };
 
 /* ==========================================================================
